@@ -83,8 +83,8 @@ var inputs = [];
 // var PSLayer = [];
 // var FirstPoly = [];
 // var SecondPoly = [];
-// var Sinputs2 = [];
-// var Finputs2 = [];
+ var Sinputs2 = [];
+ var Finputs2 = [];
  var shapes = {};
 
 
@@ -188,7 +188,7 @@ sqlClient.execute("SELECT * FROM aallpublicschoolswithdata WHERE grade2= 1")
         layer.on('click', function() { //fillForm(feature.properties.name, feature.properties.jumlahl,feature.properties.jumlahp);
           if (shapes.FirstPoly)  {map.removeLayer(shapes.FirstPoly);}
           if (shapes.SecondPoly) {map.removeLayer(shapes.SecondPoly);}
-          PriorityInputs(feature);
+          PriorityInputs(feature,"p");
           //console.log(Finputs2);
           mapVInputs(Finputs2,"FirstPoly",FirstPriority);
         //  console.log(shapes);
@@ -228,16 +228,18 @@ sqlClient.execute("SELECT * FROM districts WHERE first_keca = ANY ('{" +inputs.j
          layer.bindPopup("Name " + feature.properties.first_keca);
        }
      }).addTo(map);
+     shapes[layer].addTo(map);
+
      shapes.FirstPoly.bringToBack();
      shapes.SecondPoly.bringToBack();
    }).error(function(errors) {});
 };
 
 mapVInputs = function(inputs,layer,style) {
-  console.log(inputs,"inputs");
+
 sqlClient.execute("SELECT * FROM c_1_village_joined_wgs1984 WHERE desa = ANY ('{" +inputs.join(",")+"}'::text[])")
    .done(function(data) { //console.log(data);
-     console.log("beforeadded", inputs);
+
      shapes[layer] = L.geoJson(data, {
        style:style,
        onEachFeature: function(feature, layer) {
@@ -252,21 +254,38 @@ sqlClient.execute("SELECT * FROM c_1_village_joined_wgs1984 WHERE desa = ANY ('{
    }).error(function(errors) {});
 };
 
-PriorityInputs = function (feature){
+PriorityInputs = function (feature,B){
   Finputs = [feature.properties.firstprior1,feature.properties.firstprior2,feature.properties.firstprior3,feature.properties.firstprior4,feature.properties.firstprior5,feature.properties.firstprior6,feature.properties.firstprior7,feature.properties.firstprior8,feature.properties.firstprior9,feature.properties.firstprior10,feature.properties.firstprior11,feature.properties.firstprior12,feature.properties.firstprior13] ;
   Finputs2 = [];
+
   _.each(Finputs, function(value){
+    if (B=="p") {
+      if ( value!== "") {
+          Finputs2.push(value.toUpperCase());
+        }
+      }
+    else { if ( value!== "") {
+            Finputs2.push(value);
+            }
+        }
+})
 
-    if ( value!== "") {
+    ;
 
-        Finputs2.push(value.toUpperCase());
-    }
-  });
+
   Sinputs = [feature.properties.secondprior1,feature.properties.secondprior2,feature.properties.secondprior3,feature.properties.secondprior4,feature.properties.secondprior5,feature.properties.secondprior6,feature.properties.secondprior7,feature.properties.secondprior8,feature.properties.secondprior9] ;
+  console.log(Sinputs,"Second inputs");
   Sinputs2 = [];
   _.each(Sinputs, function(value){
-    if ( value!== "") {
-        Sinputs2.push(value);
+    if (B=="p") {
+      if ( value!== "") {
+          Sinputs2.push(value.toUpperCase());
+      }
     }
+    else { if ( value!== "") {
+            Sinputs2.push(value);
+            }
+        }
   });
-};
+
+  };
