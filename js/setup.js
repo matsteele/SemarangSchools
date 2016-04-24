@@ -3,8 +3,8 @@ var APIKEY = "57e1bdd7a6f3a5b437fade24586a6d27d1904012";
 
 // Leaflet map setup
 var map = L.map('map', {
-  center: [-7.035228, 110.417849],
-  zoom: 10
+  center: [-7.024214, 110.417849],
+  zoom: 12
 });
 
 var Stamen_TonerLite = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
