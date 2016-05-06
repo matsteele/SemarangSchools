@@ -165,7 +165,27 @@ Search = function(name,layer) {
   };
 
 
+$("#findInput").on("input", function() {
+    $('#findBut').prop('disabled', false);
+  });
 
+
+
+$( "#findInput" ).change(function() {
+        $('#findBut').prop('disabled', false);
+    });
+
+
+
+
+
+var input = document.getElementById("findInput");
+
+input.oninput = function() {
+
+
+
+  };
 
 
 // Event fired on submission
@@ -220,3 +240,9 @@ map.on('draw:created', function (e) {
   map.addLayer(layer);
   drawnLayerID = layer._leaflet_id;
 });
+
+
+
+ $('#inputDatabaseName').keyup(function (){
+     $('#findBut').prop('disabled', false);
+    });
