@@ -183,7 +183,7 @@ var input = document.getElementById("findInput");
 
 input.oninput = function() {
 
-
+  $('#findBut').prop('disabled', false);
 
   };
 
