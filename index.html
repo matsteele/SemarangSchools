@@ -9,6 +9,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.2.3/leaflet.draw.css" />
     <link rel="stylesheet" href="css/reset.css" />
     <link rel="stylesheet" href="css/style.css" />
+    <link href='https://fonts.googleapis.com/css?family=Josefin+Sans:400,100' rel='stylesheet' type='text/css'>
+
+
+
   </head>
   <body>
     <!-- Sidebar -->
@@ -16,9 +20,45 @@
       <nav class="navbar navbar-default">
         <div class="container-fluid">
           <div class="navbar-header">
-            <h1>Semarang Schools</h1>
-            <div class="input-group">
+            <h1 class="header">SEMERANG <br> SCHOOL</h1>
+            <h1 class="header" id="subheader">CATCHMENTS</h1>
+            <div class="btn-group btn-group-justified" role="group" aria-label="...">
+              <div class="btn-group" role="group">
+                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                  download
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                  <li>&nbsp___.CSV? &nbsp<input id="CSV" type="checkbox" aria-label="CSV"></li>
+                  <li>&nbsp___.SHP? &nbsp<input id="SHP" type="checkbox" aria-label="SHP"></li>
+                  <li role="separator" class="divider"></li>
+                  <li><a class="Option" id="Schools" ><h4 class="link">Schools<h4></a></li>
+                  <li><a class="Option" id="Villages" ><h4 class="link">Villages<h4></a></li>
+                  <li><a class="Option" id="Districts" ><h4 class="link">Districts<h4></a></li>
+                  <li><a class="Option" id="SchSub"><h4 class="link">School Submissions<h4></a></li>
 
+
+                </ul>
+              </div>
+
+              <div class="btn-group" role="group">
+                <button type="button" class="btn btn-default" id="edits" onclick="location.href='Editing/Submissions.html';" >edits</button>
+              </div>
+
+              <div class="btn-group" role="group">
+                <button type="button" id="info" class="btn btn-default">info</button>
+              </div>
+
+
+
+
+
+              <!-- <div class="btn-group" role="group">
+                <button type="button" class="btn btn-default">download</button>
+              </div> -->
+            </div>
+          </div>
+            <div class="input-group" id ="options2Remove">
 
               <button id="HS"
                       class="btn btn-primary"
@@ -35,8 +75,42 @@
                       >
                 Primary Schools
               </button>
+              <br>
+              <br>
+              <br>
+              <br>
+              <br>
+              <br>
+              <p>Select a school to see attribute information and catchment area.
+                      </p>
             </div>
-          </div>
+
+            <div class="input-group" id ="InfoSheet">
+            <p id="sideText">
+              <b>Contact:</b><br>
+              &nbsp &nbsp Matt Steele <br>
+              &nbsp &nbsp matsteele@gmail.com <br>
+
+
+              <b>Data Source:</b><br>
+              &nbsp &nbsp <b>School catchments:</b>  <a href="http://ppd.semarangkota.go.id/assets/content_upload/files/25-Kepwal%20No%20422.1_402_2015%20Tahun%202015-2_Lampiran%201-Rayonisasi.pdf" > Mayoral Decree 422.1/2015 </a><br>
+              &nbsp &nbsp <b>Schools:</b> geolocated via google maps<br>
+
+
+              &nbsp &nbsp<b> District Data:</b> BAPPEDA, Semarang<br>
+              &nbsp &nbsp <b>Village Data:</b> PODES, 2011, BPS<br>
+
+
+            </p>
+
+
+
+            </div>
+
+
+
+
+
         </div>
       </nav>
       <div class="container-fluid">
@@ -44,6 +118,7 @@
         </ul>
       </div>
     </div>
+
     <!-- Map -->
     <div id="map" class="map">
       <div id="time-window"></div>

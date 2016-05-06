@@ -38,7 +38,7 @@ var sqlClient = new cartodb.SQL({
   format: 'geojson'
 });
 
-var inputs = [];
+//var inputs = [];
 
 // Then we specify the SQL we want to execute (the second argument is where params are provided)
 // e.g.: sqlClient.execute("SELECT * FROM pizza_ratings WHERE ratings > {{rating}}", {rating: 4})
@@ -51,12 +51,12 @@ $('#ShowSub').click(function(){
 sqlClient.execute("SELECT * FROM semschsubmissions")
     .done(function(data) {
       L.geoJson(data, {
-        style:AdditionsOptions,
+        style:FirstPriority,
         pointToLayer: function (feature, latlng) {
-          return L.circleMarker(latlng, AdditionsOptions);
+          return L.circleMarker(latlng, FirstPriority);
       },
         onEachFeature: function(feature, layer) {
-          layer.on('click', function() {fillForm(feature.properties.name, feature.properties.jumlahl,feature.properties.jumlahp); });
+          layer.on('click', function() {fillForm(feature.properties.name,feature.properties.grade,feature.properties.jumlahl,feature.properties.jumlahp); });
         }
       }).addTo(map);
     })
@@ -65,6 +65,26 @@ sqlClient.execute("SELECT * FROM semschsubmissions")
 
 
 });
+
+// $('#ShowExst').click(function(){
+//
+//
+// sqlClient.execute("SELECT * FROM aallpublicschoolswithdatamodified")
+//     .done(function(data) {
+//       L.geoJson(data, {
+//         style:FirstPriority,
+//         pointToLayer: function (feature, latlng) {
+//           return L.circleMarker(latlng, FirstPriority);
+//       },
+//         onEachFeature: function(feature, layer) {
+//           layer.on('click', function() {fillForm(feature.properties.name, feature.properties.jumlahl,feature.properties.jumlahp); });
+//         }
+//       }).addTo(map);
+//     })
+//     .error(function(errors) {
+//     });
+//
+// });
 
 //districts
 
@@ -87,38 +107,90 @@ var drawControl = new L.Control.Draw({
 });
 
 // Automatically fill form from geojson
-var fillForm = function(name, jumlahl, jumlahp) {
+var fillForm = function(name, grade, jumlahl, jumlahp) {
   INSERT = false;
   $('#name').val(name);
+  $('#findInput').val(name);
   $('#mPop').val(jumlahl);
   $('#fPop').val(jumlahp);
+  $('#grade').val(grade);
+
 };
 
 
-var reviewComplete = function(lat, lng, name, jumlahl,jumlahp) {
-  var sql = "INSERT INTO semschsubmissions (the_geom, name, jumlahl, jumlahp)" +
+var reviewComplete = function(lat, lng, name,grade, jumlahl,jumlahp) {
+  var sql = "INSERT INTO semschsubmissions (the_geom, name, grade, jumlahl, jumlahp)" +
         "VALUES (ST_GeomFromText('POINT(" + lng + ' ' + lat +
-        ")', 4326),'" + name + "', "+jumlahl+", "+jumlahp+
+        ")', 4326),'" + name + "','" + grade + "', "+jumlahl+", "+jumlahp+
         ")&api_key=" + APIKEY;
         console.log(jumlahl);
   $.ajax('https://matsteele.cartodb.com/api/v2/sql?q=' + sql).done(function() {
     $('#name').prop('disabled', false);
+    $('#grade').prop('disabled', false);
     $('#mPop').prop('disabled', false);
     $('#fPop').prop('disabled', false);
     $('#submit').prop('disabled', false);
   });
 };
 
+
+
+
+
+
+
+
+
+
+Search = function(name,layer) {
+
+
+
+  sqlClient.execute("SELECT * FROM aallpublicschoolswithdatamodified WHERE name ILIKE '%" + name + "%'")// ANY // ('{" +name+"}'::text[])")
+     .done(function(data) { //console.log(data);
+       shapes[layer] = L.geoJson(data, {
+         style:Marker1,
+         pointToLayer: function (feature, latlng) {
+           return L.circleMarker(latlng, Marker1);
+          },
+         onEachFeature: function(feature, layer) {
+           layer.on('click', function() {fillForm(feature.properties.name,feature.properties.grade,feature.properties.jumlahl,feature.properties.jumlahp); });
+           console.log(feature.properties.grade);
+
+         }
+       }).addTo(map);
+       shapes[layer].addTo(map);
+       console.log(shapes[layer]);
+     });
+  };
+
+
+
+
+
 // Event fired on submission
+$('#findBut').click(function() {
+  if(shapes.Search){map.removeLayer(shapes.Search);}
+  if($('#findInput').val()){$('#name').val($('#findInput').val());}
+  Search(
+    $('#findInput').val(), Search
+      );
+
+});
+
+
+
 $('#submit').click(function() {
   reviewComplete(
     $('#lat').val(),
     $('#lng').val(),
     $('#name').val(),
+    $('#grade').val(),
     $('#mPop').val(),
     $('#fPop').val()
   );
   $('#name').val("").prop('disabled', true);
+  $('#grade').prop('disabled', false);
   $('#mPop').val("").prop('disabled', true);
   $('#fPop').val("").prop('disabled', true);
   $('#submit').prop('disabled', true);
@@ -136,6 +208,7 @@ map.on('draw:created', function (e) {
   if (type === 'marker') {
     // Change the 5 here to alter the number of closest records returned!
     $('#name').prop('disabled', false);
+    $('#grade').prop('disabled', false);
     $('#mPop').prop('disabled', false);
     $('#fPop').prop('disabled', false);
     $('#submit').prop('disabled', false);

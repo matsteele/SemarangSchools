@@ -1,3 +1,4 @@
+
 var INSERT = true;
 var APIKEY = "57e1bdd7a6f3a5b437fade24586a6d27d1904012";
 
@@ -30,10 +31,10 @@ $.ajax("https://npzimmerman.cartodb.com/api/v2/sql?q=SELECT * FROM pizza_ratings
 
 //style
 
-var geojsonMarkerOptions = {
+var Marker1 = {
     radius: 8,
-    fillColor: "#5CA2D1",
-    color: "#000",
+    fillColor: "#404241",
+    color: "#FFFFFF",
     weight: 1,
     opacity: 1,
     fillOpacity: 0.8
@@ -41,16 +42,16 @@ var geojsonMarkerOptions = {
 
 var FirstPriority = {
     radius: 8,
-    fillColor:"#D8FFE1",
-    color: "#ACE888",
+    fillColor:"#CC1B0E",
+    color: "#6E0F07",
     weight: 2,
     opacity: 0.3,
-    fillOpacity: 0.6
+    fillOpacity: 0.3
 };
 var SecondPriority = {
     radius: 8,
-    fillColor: "#FFCE7E",
-    color: "#FFCE7E",
+    fillColor: "#EB8F71",
+    color: "#B26C56",
     weight: 2,
     opacity: 0.5,
     fillOpacity: 0.1
@@ -67,6 +68,23 @@ var AdditionsOptions = {
 
 
 
+// PopUP Functions
+
+PointPop =  function(feature, layer) {
+  layer.bindPopup("<dd>"+"<b>"+"School Name: " +"</b>" + feature.properties.name + "</dd>"+  "<dd>"+"<b>"+" Address: "+"</b>"+ feature.properties.alamat+"</dd>"+  "<dd>"+"<b>"+" School Designation: "+"</b>"+ feature.properties.grade+"</dd>");
+};
+
+VillPop = function(feature, layer){
+  layer.bindPopup("<dd>"+"<b>"+"Village Name: " +"</b>" + feature.properties.desa + "</dd>"+  "<dd>"+"<b>"+" # of Children: "+"</b>"+ feature.properties.children+"</dd>");
+};
+
+
+DistPop = function(feature, layer){
+  layer.bindPopup("<dd>"+"<b>"+"Village Name: " +"</b>" + feature.properties.first_keca + "</dd>");
+};
+
+
+//signin
 
 var sqlClient = new cartodb.SQL({
   user: 'matsteele',
@@ -91,19 +109,25 @@ var inputs = [];
 
 
 $('#HS').click(function() {
-  if(shapes.MSLayer){map.removeLayer(shapes.MSLayer);}
+  if(shapes.HSLayer){map.removeLayer(shapes.HSLayer);}
   if(shapes.PSLayer){map.removeLayer(shapes.PSLayer);}
+  if(shapes.MSLayer){map.removeLayer(shapes.MSLayer);}
+  if (shapes.FirstPoly)  {map.removeLayer(shapes.FirstPoly);}
+  if (shapes.SecondPoly) {map.removeLayer(shapes.SecondPoly);}
 
+var StudBod =[];
 sqlClient.execute("SELECT * FROM aallpublicschoolswithdata WHERE grade2= 3")
   .done(function(data) {
     shapes.HSLayer = L.geoJson(data, {
-      style:geojsonMarkerOptions,
+      style:Marker1,
       pointToLayer: function (feature, latlng) {
-        return L.circleMarker(latlng, geojsonMarkerOptions);
+        return L.circleMarker(latlng, Marker1);
     },
-      onEachFeature: function(feature, layer) {
-
-        layer.bindPopup("Name " + feature.properties.name);
+      onEachFeature:
+        function(feature, layer) {
+        var StudBod = feature.properties.jumlahl+feature.properties.jumlahp;
+      //  console.log(StudBod);
+        layer.bindPopup("<dd>"+"<b>"+"School Name: " +"</b>" + feature.properties.name + "</dd>"+  "<dd>"+"<b>"+"Address: "+"</b>"+ feature.properties.alamat+"</dd>"+  "<dd>"+"<b>"+"School Designation: "+"</b>"+ feature.properties.grade+"</dd>"+  "<dd>"+"<b>"+"Proportion Male: "+"</b>"+ feature.properties.mfgenderr +"</dd>"+  "<dd>"+"<b>"+"Number of Students: "+"</b>"+ StudBod +"</dd>"+  "<dd>"+"<b>"+"Admittance Rate: "+"</b>"+ feature.properties.admitr +"</dd>");
         layer.on('click', function() { //fillForm(feature.properties.name, feature.properties.jumlahl,feature.properties.jumlahp);
           if (shapes.FirstPoly) {map.removeLayer(shapes.FirstPoly);}
           if (shapes.SecondPoly) {map.removeLayer(shapes.SecondPoly);}
@@ -125,7 +149,7 @@ sqlClient.execute("SELECT * FROM aallpublicschoolswithdata WHERE grade2= 3")
 // sqlClient.execute("SELECT * FROM districts")
 //    .done(function(data) { console.log(data);
 //      L.geoJson(data, {
-//        style:geojsonMarkerOptions,
+//        style:Marker1,
 //        onEachFeature: function(feature, layer) {
 //          layer.bindPopup("Name " + feature.properties.first_keca);
 //        }
@@ -137,17 +161,20 @@ $('#MS').click(function() {
 
   if(shapes.HSLayer){map.removeLayer(shapes.HSLayer);}
   if(shapes.PSLayer){map.removeLayer(shapes.PSLayer);}
+  if(shapes.MSLayer){map.removeLayer(shapes.MSLayer);}
+  if (shapes.FirstPoly)  {map.removeLayer(shapes.FirstPoly);}
+  if (shapes.SecondPoly) {map.removeLayer(shapes.SecondPoly);}
 
 sqlClient.execute("SELECT * FROM aallpublicschoolswithdata WHERE grade2= 2")
   .done(function(data) { //console.log(data);
     shapes.MSLayer = L.geoJson(data, {
-      style:geojsonMarkerOptions,
+      style:Marker1,
       pointToLayer: function (feature, latlng) {
-        return L.circleMarker(latlng, geojsonMarkerOptions);
+        return L.circleMarker(latlng, Marker1);
     },
       onEachFeature: function(feature, layer) {
 
-        layer.bindPopup("Name " + feature.properties.name);
+        layer.bindPopup("<dd>"+"<b>"+"School Name: " +"</b>" + feature.properties.name + "</dd>"+  "<dd>"+"<b>"+" Address: "+"</b>"+ feature.properties.alamat+"</dd>"+  "<dd>"+"<b>"+" School Designation: "+"</b>"+ feature.properties.grade+"</dd>");
         layer.on('click', function() { //fillForm(feature.properties.name, feature.properties.jumlahl,feature.properties.jumlahp);
           if (shapes.FirstPoly) {map.removeLayer(shapes.FirstPoly);}
           if (shapes.SecondPoly) {map.removeLayer(shapes.SecondPoly);}
@@ -173,25 +200,28 @@ $('#PS').click(function() {
 
   if(shapes.HSLayer){map.removeLayer(shapes.HSLayer);}
   if(shapes.PSLayer){map.removeLayer(shapes.PSLayer);}
+  if(shapes.MSLayer){map.removeLayer(shapes.MSLayer);}
+  if (shapes.FirstPoly)  {map.removeLayer(shapes.FirstPoly);}
+  if (shapes.SecondPoly) {map.removeLayer(shapes.SecondPoly);}
 
 
 sqlClient.execute("SELECT * FROM aallpublicschoolswithdata WHERE grade2= 1")
   .done(function(data) { //console.log(data);
     shapes.PSLayer = L.geoJson(data, {
-      style:geojsonMarkerOptions,
+      style:Marker1,
       pointToLayer: function (feature, latlng) {
-        return L.circleMarker(latlng, geojsonMarkerOptions);
+        return L.circleMarker(latlng, Marker1);
     },
       onEachFeature: function(feature, layer) {
 
-        layer.bindPopup("Name " + feature.properties.name);
+        layer.bindPopup("<dd>"+"<b>"+"School Name: " +"</b>" + feature.properties.name + "</dd>"+  "<dd>"+"<b>"+" Address: "+"</b>"+ feature.properties.alamat+"</dd>"+  "<dd>"+"<b>"+" School Designation: "+"</b>"+ feature.properties.grade+"</dd>");
         layer.on('click', function() { //fillForm(feature.properties.name, feature.properties.jumlahl,feature.properties.jumlahp);
           if (shapes.FirstPoly)  {map.removeLayer(shapes.FirstPoly);}
           if (shapes.SecondPoly) {map.removeLayer(shapes.SecondPoly);}
           PriorityInputs(feature,"p");
-          //console.log(Finputs2);
+          console.log(Finputs2);
           mapVInputs(Finputs2,"FirstPoly",FirstPriority);
-        //  console.log(shapes);
+          console.log(shapes);
           });
 
       }
@@ -218,18 +248,16 @@ sqlClient.execute("SELECT * FROM aallpublicschoolswithdata WHERE grade2= 1")
 //    }).error(function(errors) {});
 
 
+
 mapInputs = function(inputs,layer,style) {
 
 sqlClient.execute("SELECT * FROM districts WHERE first_keca = ANY ('{" +inputs.join(",")+"}'::text[])")
    .done(function(data) { //console.log(data);
      shapes[layer] = L.geoJson(data, {
        style:style,
-       onEachFeature: function(feature, layer) {
-         layer.bindPopup("Name " + feature.properties.first_keca);
-       }
+       onEachFeature: DistPop
      }).addTo(map);
      shapes[layer].addTo(map);
-
      shapes.FirstPoly.bringToBack();
      shapes.SecondPoly.bringToBack();
    }).error(function(errors) {});
@@ -242,9 +270,7 @@ sqlClient.execute("SELECT * FROM c_1_village_joined_wgs1984 WHERE desa = ANY ('{
 
      shapes[layer] = L.geoJson(data, {
        style:style,
-       onEachFeature: function(feature, layer) {
-         layer.bindPopup("Name " + feature.properties.desa);
-       }
+       onEachFeature: VillPop
      }).addTo(map);
     shapes[layer].addTo(map);
 
@@ -268,24 +294,102 @@ PriorityInputs = function (feature,B){
             Finputs2.push(value);
             }
         }
-})
-
-    ;
+    });
 
 
   Sinputs = [feature.properties.secondprior1,feature.properties.secondprior2,feature.properties.secondprior3,feature.properties.secondprior4,feature.properties.secondprior5,feature.properties.secondprior6,feature.properties.secondprior7,feature.properties.secondprior8,feature.properties.secondprior9] ;
-  console.log(Sinputs,"Second inputs");
   Sinputs2 = [];
   _.each(Sinputs, function(value){
     if (B=="p") {
       if ( value!== "") {
           Sinputs2.push(value.toUpperCase());
+        }
       }
-    }
     else { if ( value!== "") {
             Sinputs2.push(value);
             }
         }
-  });
-
+      });
   };
+
+
+//downloading,
+
+
+var checkboxes = $("input[type='checkbox']");
+checkboxes.click(function() {
+    $("h4").toggleClass("link");
+});
+
+$('#Schools').click(function() {
+
+     if ($('#CSV').is(':checked')) {
+        console.log("WorkedCSV");
+      $("#Schools").attr("href", "https://matsteele.cartodb.com/api/v2/sql?format=csv&q=SELECT+*+FROM+aallpublicschoolswithdata");
+     }
+     if (($('#SHP').is(':checked')) ) {
+       $("#Schools").attr("href", "https://matsteele.cartodb.com/api/v2/sql?format=shp&q=SELECT+*+FROM+aallpublicschoolswithdata");
+     }
+     else {
+       console.log("Didn'twork");
+     }
+
+});
+
+$('#Districts').click(function() {
+
+     if ($('#CSV').is(':checked')) {
+        console.log("WorkedCSV");
+      $("#Districts").attr("href", "https://matsteele.cartodb.com/api/v2/sql?format=csv&q=SELECT+*+FROM+districts2");
+     }
+     if (($('#SHP').is(':checked')) ) {
+       $("#Districts").attr("href", "https://matsteele.cartodb.com/api/v2/sql?format=shp&q=SELECT+*+FROM+districts2");
+     }
+     else {
+       console.log("Didn'twork");
+     }
+
+});
+
+$('#Villages').click(function() {
+
+     if ($('#CSV').is(':checked')) {
+        console.log("WorkedCSV");
+      $("#Villages").attr("href", "https://matsteele.cartodb.com/api/v2/sql?format=csv&q=SELECT+*+FROM+villages2");
+     }
+     if (($('#SHP').is(':checked')) ) {
+       $("#Villages").attr("href", "https://matsteele.cartodb.com/api/v2/sql?format=shp&q=SELECT+*+FROM+villages2");
+     }
+     else {
+       console.log("Didn'twork");
+     }
+
+});
+
+$('#SchSub').click(function() {
+
+     if ($('#CSV').is(':checked')) {
+        console.log("WorkedCSV");
+      $("#SchSub").attr("href", "https://matsteele.cartodb.com/api/v2/sql?format=csv&q=SELECT+*+FROM+SemSchSubmissions");
+     }
+     if (($('#SHP').is(':checked')) ) {
+       $("#SchSub").attr("href", "https://matsteele.cartodb.com/api/v2/sql?format=shp&q=SELECT+*+FROM+SemSchSubmissions");
+     }
+     else {
+       console.log("Didn'twork");
+     }
+});
+
+
+$('#InfoSheet').hide();
+
+//Info Tab
+
+$('#info').click(function() {
+$('#options2Remove').fadeOut();
+
+});
+
+$('#info').click(function() {
+$('#InfoSheet').fadeIn().toggle(slow);
+});

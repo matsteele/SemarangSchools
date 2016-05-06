@@ -1,7 +1,7 @@
 body {
     padding: 0;
     overflow: hidden;
-    font-family: helvetica, arial, sans-serif;
+   font-family: 'Josefin Sans', sans-serif;
 }
 
 #time-window {
@@ -76,4 +76,115 @@ body {
 .navbar-brand {
     font-size: 14px;
     font-weight: bold;
+}
+
+.navbar-header {
+  width:100%
+
+}
+
+.header {
+  font-family: 'Josefin Sans', sans-serif;
+
+  font-size:30px;
+  text-align:center;
+  color:#404241;
+  margin-bottom:-1px;
+}
+.header2 {
+  font-family: 'Josefin Sans', sans-serif;
+  font-weight:100;
+  font-size:30px;
+  text-align:center;
+  color:#404241;
+  margin-bottom:-1px;
+}
+
+#subheader {
+  color: #B2180C;
+  margin-top: 0px;
+}
+
+.btn-primary {
+    color: #555;
+    background-color: rgba(255,255,255,0);
+    border-color: #8C9190;
+    width: 100%;
+    padding:15px;
+    margin-top:5px;
+}
+
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open>.dropdown-toggle.btn-primary {
+    color: #555;
+    background-color: #E0E0E0;
+    border-color: #FFFFFF;
+    width: 100%;
+    padding:15px;
+    margin-top:5px;
+    outline: 0;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(100,100,100,.6);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(100,100,100,.6);
+
+}
+
+.input-group{
+  padding-top: 60px;
+  width:100%
+}
+
+
+.btn-group-justified {
+margin-top:5px;
+  font-family: 'Josefin Sans', sans-serif;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(100,100,100,.6);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(100,100,100,.6);
+}
+
+.btn-group-justified>.btn-group .btn {
+    width: 100%;
+    background-color: rgba(153, 153, 153, 0.88);
+    color: white;
+
+}
+
+.MainText {
+padding-top: 180px;;
+align-content: center;
+text-align:center;
+
+}
+
+.latLngDiv {
+  width:100%;
+  text-align:center;
+
+}
+
+#lat {
+  color:lightgrey;
+}
+
+#lng {
+  color:lightgrey;
+}
+
+p {
+  color:grey;
+  text-align:center;
+}
+
+#buttonT {
+  color:#fff;
+  padding:5px;
+
+}
+
+.link{
+  color:white;
+  font-size: 14px;
+}
+
+#sideText{
+
+  text-align: left;
 }
