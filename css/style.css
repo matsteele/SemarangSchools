@@ -188,3 +188,26 @@ p {
 
   text-align: left;
 }
+
+.legend {
+  height: 20px;
+  width : 100px;
+  background-color: rgba(153, 153, 153, 0.88);
+  color: white;
+  text-align: center;
+  margin: 0 auto;
+  margin-bottom:3px;
+
+}
+
+#Prim {
+  background-color: rgb(233, 180, 175);
+  color: white;
+}
+
+#Secon{
+  background-color: rgb(244, 235, 230);
+  color: white;
+
+
+}

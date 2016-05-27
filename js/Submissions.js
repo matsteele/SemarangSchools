@@ -123,7 +123,7 @@ var reviewComplete = function(lat, lng, name,grade, jumlahl,jumlahp) {
         "VALUES (ST_GeomFromText('POINT(" + lng + ' ' + lat +
         ")', 4326),'" + name + "','" + grade + "', "+jumlahl+", "+jumlahp+
         ")&api_key=" + APIKEY;
-        console.log(jumlahl);
+      //  console.log(jumlahl);
   $.ajax('https://matsteele.cartodb.com/api/v2/sql?q=' + sql).done(function() {
     $('#name').prop('disabled', false);
     $('#grade').prop('disabled', false);
@@ -140,7 +140,7 @@ var reviewComplete = function(lat, lng, name,grade, jumlahl,jumlahp) {
 
 
 
-
+var shapes;
 
 Search = function(name,layer) {
 
@@ -148,19 +148,19 @@ Search = function(name,layer) {
 
   sqlClient.execute("SELECT * FROM aallpublicschoolswithdatamodified WHERE name ILIKE '%" + name + "%'")// ANY // ('{" +name+"}'::text[])")
      .done(function(data) { //console.log(data);
-       shapes[layer] = L.geoJson(data, {
+        shapes[layer] = L.geoJson(data, {
          style:Marker1,
          pointToLayer: function (feature, latlng) {
            return L.circleMarker(latlng, Marker1);
           },
          onEachFeature: function(feature, layer) {
            layer.on('click', function() {fillForm(feature.properties.name,feature.properties.grade,feature.properties.jumlahl,feature.properties.jumlahp); });
-           console.log(feature.properties.grade);
+          // console.log(feature.properties.grade);
 
          }
        }).addTo(map);
        shapes[layer].addTo(map);
-       console.log(shapes[layer]);
+
      });
   };
 
